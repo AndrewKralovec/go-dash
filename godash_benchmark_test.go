@@ -27,6 +27,7 @@ func DoNothing(data ...interface{}) {}
 
 // avoid compiler optimisations
 var intSliceResult []int
+var structSliceResult Points
 var interfaceSliceResult []interface{}
 
 /************************************
@@ -37,7 +38,7 @@ Each Benchmarks
 func BenchmarkNativeEachInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b.StopTimer()
-		intSlice := GenerateIntSlice(10000)
+		intSlice := GenerateIntSlice(1000)
 
 		b.StartTimer()
 		for i, v := range intSlice {
@@ -49,7 +50,7 @@ func BenchmarkNativeEachInt(b *testing.B) {
 func BenchmarkEachInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b.StopTimer()
-		intSlice := GenerateIntSlice(10000)
+		intSlice := GenerateIntSlice(1000)
 
 		b.StartTimer()
 		Each(intSlice, func(i interface{}, v interface{}) {
@@ -61,7 +62,7 @@ func BenchmarkEachInt(b *testing.B) {
 func BenchmarkNativeEachStruct(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b.StopTimer()
-		structSlice := GenerateStructSlice(10000)
+		structSlice := GenerateStructSlice(1000)
 
 		b.StartTimer()
 		for i, v := range structSlice {
@@ -73,7 +74,7 @@ func BenchmarkNativeEachStruct(b *testing.B) {
 func BenchmarkEachStruct(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b.StopTimer()
-		structSlice := GenerateStructSlice(10000)
+		structSlice := GenerateStructSlice(1000)
 
 		b.StartTimer()
 		Each(structSlice, func(i interface{}, v interface{}) {
@@ -92,15 +93,14 @@ Filter Benchmarks
 ************************************/
 
 func BenchmarkNativeFilterInt(b *testing.B) {
+	b.StopTimer()
+
 	var r []int
+	intSlice := GenerateIntSlice(1000)
+	target := intSlice[0]
 
+	b.StartTimer()
 	for n := 0; n < b.N; n++ {
-		b.StopTimer()
-
-		intSlice := GenerateIntSlice(10000)
-		target := intSlice[0]
-
-		b.StartTimer()
 		r = make([]int, 0)
 		for _, val := range intSlice {
 			if val == target {
@@ -113,17 +113,53 @@ func BenchmarkNativeFilterInt(b *testing.B) {
 }
 
 func BenchmarkFilterInt(b *testing.B) {
+	b.StopTimer()
+
 	var r []interface{}
+	intSlice := GenerateIntSlice(1000)
+	target := intSlice[0]
 
+	b.StartTimer()
 	for n := 0; n < b.N; n++ {
-		b.StopTimer()
-
-		intSlice := GenerateIntSlice(10000)
-		target := intSlice[0]
-
-		b.StartTimer()
 		r = Filter(intSlice, func(val interface{}) bool {
 			return val.(int) == target
+		})
+	}
+
+	interfaceSliceResult = r
+}
+
+func BenchmarkNativeFilterStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r Points
+	structSlice := GenerateStructSlice(1000)
+	target := structSlice[0]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = make(Points, 0)
+		for _, val := range structSlice {
+			if val.X == target.X {
+				r = append(r, target)
+			}
+		}
+	}
+
+	structSliceResult = r
+}
+
+func BenchmarkFilterStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r []interface{}
+	structSlice := GenerateStructSlice(1000)
+	target := structSlice[0]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = Filter(structSlice, func(val interface{}) bool {
+			return val.(Point).X == target.X
 		})
 	}
 
