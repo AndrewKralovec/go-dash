@@ -78,3 +78,31 @@ l := _.Last([]string{"peach", "apple", "pear", "plum"})
 // => returns "plum" (<interface{}(string)>)
 ```
 
+## Benchmarks
+
+* [`Native loop vs Each`](#native-loop-vs-each)
+* [`Native searching vs Filter`](#native-searching-vs-Filter)
+
+### `Native loop vs Each`
+
+Natvie loops is on average 1.5x-1.6x faster.
+
+```shell
+BenchmarkNativeEachInt-16                   4092            299358 ns/op          157953 B/op      19744 allocs/op
+BenchmarkEachInt-16                         2482            473850 ns/op          157978 B/op      19745 allocs/op
+
+BenchmarkNativeEachStruct-16                3157            363256 ns/op          237954 B/op      19744 allocs/op
+BenchmarkEachStruct-16                      2664            543485 ns/op          237978 B/op      19745 allocs/op
+```
+
+### `Native searching vs Filter`
+
+Natvie search is on average 40x-60x faster.
+
+```shell
+BenchmarkNativeFilterInt-16              1980960               606.3 ns/op             8 B/op          1 allocs/op
+BenchmarkFilterInt-16                      32916             36629 ns/op            8040 B/op       1002 allocs/op
+
+BenchmarkNativeFilterStruct-16           1358168               882.1 ns/op            16 B/op          1 allocs/op
+BenchmarkFilterStruct-16                   29234             41097 ns/op           16040 B/op       1002 allocs/op
+```
