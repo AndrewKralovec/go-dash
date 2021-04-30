@@ -19,7 +19,7 @@ var structArray = Points{
 	{0, 1},
 	{1, 1},
 }
-var object = Point{0, 0}
+var point = Point{0, 0}
 
 /************************************
 #region
@@ -121,6 +121,17 @@ func TestEachStruct(t *testing.T) {
 		target := structArray[i.(int)]
 		if v != target {
 			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
+	})
+}
+
+func TestEachWithStruct(t *testing.T) {
+	Each(point, func(k interface{}, v interface{}) {
+		if k != "X" && k != "Y" {
+			t.Fatalf(`key :%v not found in :%v`, k, point)
+		}
+		if v != point.X && v != point.Y {
+			t.Fatalf(`value :%v not found in :%v`, v, point)
 		}
 	})
 }
