@@ -125,7 +125,7 @@ func TestEachStruct(t *testing.T) {
 	})
 }
 
-func TestEachLength(t *testing.T) {
+func TestEachMatchingElements(t *testing.T) {
 	var visted []interface{}
 	Each(structArray, func(i interface{}, v interface{}) {
 		target := structArray[i.(int)]
@@ -139,6 +139,13 @@ func TestEachLength(t *testing.T) {
 	stSize := len(structArray)
 	if vSize != stSize {
 		t.Fatalf(`size :%v does not match :%v`, vSize, stSize)
+	}
+
+	for i, v := range structArray {
+		target := visted[i]
+		if v != target {
+			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
 	}
 
 }
