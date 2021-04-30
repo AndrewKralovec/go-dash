@@ -188,3 +188,47 @@ func TestIncludesStruct(t *testing.T) {
 /************************************
 #endregion
 ************************************/
+
+/************************************
+#region
+Find Tests
+************************************/
+func TestFindString(t *testing.T) {
+	target := stringArray[0]
+
+	v := Find(stringArray, func(val interface{}) bool {
+		return val.(string) == target
+	})
+
+	if v != target {
+		t.Fatalf(`value :%v does not match :%v`, target, v)
+	}
+}
+
+func TestFindInt(t *testing.T) {
+	target := intArray[0]
+
+	v := Find(intArray, func(val interface{}) bool {
+		return val.(int) == target
+	})
+
+	if v != target {
+		t.Fatalf(`value :%v does not match :%v`, target, v)
+	}
+}
+
+func TestFindStruct(t *testing.T) {
+	target := structArray[0]
+
+	v := Find(structArray, func(val interface{}) bool {
+		return val.(Point).X == target.X
+	})
+
+	if v != target {
+		t.Fatalf(`value :%v does not match :%v`, target, v)
+	}
+}
+
+/************************************
+#endregion
+************************************/

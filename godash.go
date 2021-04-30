@@ -4,6 +4,8 @@ import (
 	"reflect"
 )
 
+type ConditionalCallback func(v interface{}) bool
+
 func Each(data interface{}, cb func(k interface{}, v interface{})) {
 	v := reflect.ValueOf(data)
 
@@ -20,6 +22,17 @@ func Each(data interface{}, cb func(k interface{}, v interface{})) {
 			cb(name, val)
 		}
 	}
+}
+
+func Find(data interface{}, cb ConditionalCallback) interface{} {
+	v := reflect.ValueOf(data)
+	for i := 0; i < v.Len(); i++ {
+		val := v.Index(i).Interface()
+		if cb(val) {
+			return val
+		}
+	}
+	return nil
 }
 
 func First(data interface{}) interface{} {
