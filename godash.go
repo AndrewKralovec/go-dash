@@ -24,6 +24,19 @@ func Each(data interface{}, cb func(k interface{}, v interface{})) {
 	}
 }
 
+func Filter(data interface{}, cb ConditionalCallback) []interface{} {
+	var array []interface{}
+	v := reflect.ValueOf(data)
+	for i := 0; i < v.Len(); i++ {
+		val := v.Index(i).Interface()
+		if cb(val) {
+			array = append(array, val)
+		}
+	}
+
+	return array
+}
+
 func Find(data interface{}, cb ConditionalCallback) interface{} {
 	v := reflect.ValueOf(data)
 	for i := 0; i < v.Len(); i++ {

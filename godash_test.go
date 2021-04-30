@@ -41,7 +41,7 @@ func TestFirstInt(t *testing.T) {
 	f := First(intArray)
 
 	if f == nil || target != f {
-		t.Fatalf(`value :%v does not match :%v`, target, f)
+		t.Fatalf(`value :%v does not match :%v`, f, target)
 	}
 }
 
@@ -50,7 +50,7 @@ func TestFirstPoint(t *testing.T) {
 	f := First(structArray)
 
 	if f == nil || target != f {
-		t.Fatalf(`value :%v does not match :%v`, target, f)
+		t.Fatalf(`value :%v does not match :%v`, f, target)
 	}
 }
 
@@ -62,13 +62,14 @@ func TestFirstPoint(t *testing.T) {
 #region
 Last Tests
 ************************************/
+
 func TestLastString(t *testing.T) {
 	target := stringArray[len(stringArray)-1]
 	want := regexp.MustCompile(target)
 	l := Last(stringArray)
 
 	if l == nil || !want.MatchString(l.(string)) {
-		t.Fatalf(`value :%v does not match :%v`, target, l)
+		t.Fatalf(`value :%v does not match :%v`, l, target)
 	}
 }
 
@@ -77,7 +78,7 @@ func TestLastInt(t *testing.T) {
 	l := Last(intArray)
 
 	if l == nil || target != l {
-		t.Fatalf(`value :%v does not match :%v`, target, l)
+		t.Fatalf(`value :%v does not match :%v`, l, target)
 	}
 }
 
@@ -86,7 +87,7 @@ func TestLastPoint(t *testing.T) {
 	l := Last(structArray)
 
 	if l == nil || target != l {
-		t.Fatalf(`value :%v does not match :%v`, target, l)
+		t.Fatalf(`value :%v does not match :%v`, l, target)
 	}
 }
 
@@ -98,11 +99,12 @@ func TestLastPoint(t *testing.T) {
 #region
 Each Tests
 ************************************/
+
 func TestEachString(t *testing.T) {
 	Each(stringArray, func(i interface{}, v interface{}) {
 		target := stringArray[i.(int)]
 		if v != target {
-			t.Fatalf(`value :%v does not match :%v`, target, v)
+			t.Fatalf(`value :%v does not match :%v`, v, target)
 		}
 	})
 }
@@ -111,7 +113,7 @@ func TestEachInt(t *testing.T) {
 	Each(intArray, func(i interface{}, v interface{}) {
 		target := intArray[i.(int)]
 		if v != target {
-			t.Fatalf(`value :%v does not match :%v`, target, v)
+			t.Fatalf(`value :%v does not match :%v`, v, target)
 		}
 	})
 }
@@ -120,7 +122,7 @@ func TestEachStruct(t *testing.T) {
 	Each(structArray, func(i interface{}, v interface{}) {
 		target := structArray[i.(int)]
 		if v != target {
-			t.Fatalf(`value :%v does not match :%v`, target, v)
+			t.Fatalf(`value :%v does not match :%v`, v, target)
 		}
 	})
 }
@@ -141,7 +143,7 @@ func TestEachMatchingElements(t *testing.T) {
 	Each(structArray, func(i interface{}, v interface{}) {
 		target := structArray[i.(int)]
 		if v != target {
-			t.Fatalf(`value :%v does not match :%v`, target, v)
+			t.Fatalf(`value :%v does not match :%v`, v, target)
 		}
 
 		visted = append(visted, v)
@@ -155,7 +157,7 @@ func TestEachMatchingElements(t *testing.T) {
 	for i, v := range structArray {
 		target := visted[i]
 		if v != target {
-			t.Fatalf(`value :%v does not match :%v`, target, v)
+			t.Fatalf(`value :%v does not match :%v`, v, target)
 		}
 	}
 
@@ -169,6 +171,7 @@ func TestEachMatchingElements(t *testing.T) {
 #region
 Includes Tests
 ************************************/
+
 func TestIncludesString(t *testing.T) {
 	target := stringArray[0]
 	has := Includes(stringArray, target)
@@ -204,6 +207,7 @@ func TestIncludesStruct(t *testing.T) {
 #region
 Find Tests
 ************************************/
+
 func TestFindString(t *testing.T) {
 	target := stringArray[0]
 
@@ -212,7 +216,7 @@ func TestFindString(t *testing.T) {
 	})
 
 	if v != target {
-		t.Fatalf(`value :%v does not match :%v`, target, v)
+		t.Fatalf(`value :%v does not match :%v`, v, target)
 	}
 }
 
@@ -224,7 +228,7 @@ func TestFindInt(t *testing.T) {
 	})
 
 	if v != target {
-		t.Fatalf(`value :%v does not match :%v`, target, v)
+		t.Fatalf(`value :%v does not match :%v`, v, target)
 	}
 }
 
@@ -236,7 +240,67 @@ func TestFindStruct(t *testing.T) {
 	})
 
 	if v != target {
-		t.Fatalf(`value :%v does not match :%v`, target, v)
+		t.Fatalf(`value :%v does not match :%v`, v, target)
+	}
+}
+
+/************************************
+#endregion
+************************************/
+
+/************************************
+#region
+Filter Tests
+************************************/
+
+func TestFilterString(t *testing.T) {
+	target := stringArray[0]
+
+	v := Filter(stringArray, func(val interface{}) bool {
+		return val.(string) == target
+	})
+
+	if len(v) == 0 {
+		t.Fatalf(`value :%v not found in :%v`, target, stringArray)
+	}
+
+	e := v[0]
+	if e != target {
+		t.Fatalf(`value :%v does not match :%v`, e, target)
+	}
+}
+
+func TestFilterInt(t *testing.T) {
+	target := intArray[0]
+
+	v := Filter(intArray, func(val interface{}) bool {
+		return val.(int) == target
+	})
+
+	if len(v) == 0 {
+		t.Fatalf(`value :%v not found in :%v`, target, intArray)
+	}
+
+	e := v[0]
+	if e != target {
+		t.Fatalf(`value :%v does not match :%v`, e, target)
+	}
+}
+
+func TestFilterStruct(t *testing.T) {
+	target := structArray[0]
+
+	v := Filter(structArray, func(val interface{}) bool {
+		return val.(Point).X == target.X
+	})
+
+	if len(v) == 0 {
+		t.Fatalf(`value :%v not found in :%v`, target, structArray)
+	}
+
+	e := v[0]
+	if e != target {
+		t.Fatalf(`value :%v does not match :%v`, e, target)
 	}
 }
 
