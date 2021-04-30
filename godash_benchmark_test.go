@@ -25,6 +25,11 @@ func GenerateStructSlice(n int) Points {
 // Do nothing
 func DoNothing(data ...interface{}) {}
 
+/************************************
+#region
+Each Benchmarks
+************************************/
+
 func BenchmarkNativeEachInt(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		b.StopTimer()
@@ -72,3 +77,7 @@ func BenchmarkEachStruct(b *testing.B) {
 		})
 	}
 }
+
+/************************************
+#endregion
+************************************/
