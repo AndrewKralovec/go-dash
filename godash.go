@@ -32,6 +32,17 @@ func First(data interface{}) interface{} {
 	return val
 }
 
+func Includes(data interface{}, target interface{}) bool {
+	v := reflect.ValueOf(data)
+	for i := 0; i < v.Len(); i++ {
+		val := v.Index(i).Interface()
+		if val == target {
+			return true
+		}
+	}
+	return false
+}
+
 func Last(data interface{}) interface{} {
 	v := reflect.ValueOf(data)
 	val := v.Index(v.Len() - 1).Interface()

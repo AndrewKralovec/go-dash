@@ -153,3 +153,38 @@ func TestEachMatchingElements(t *testing.T) {
 /************************************
 #endregion
 ************************************/
+
+/************************************
+#region
+Includes Tests
+************************************/
+func TestIncludesString(t *testing.T) {
+	target := stringArray[0]
+	has := Includes(stringArray, target)
+
+	if !has {
+		t.Fatalf(`could not find value :%v in :%v`, target, stringArray)
+	}
+}
+
+func TestIncludesInt(t *testing.T) {
+	target := intArray[0]
+	has := Includes(intArray, target)
+
+	if !has {
+		t.Fatalf(`could not find value :%v in :%v`, target, intArray)
+	}
+}
+
+func TestIncludesStruct(t *testing.T) {
+	target := structArray[0]
+	has := Includes(structArray, target)
+
+	if !has {
+		t.Fatalf(`could not find value :%v in :%v`, target, structArray)
+	}
+}
+
+/************************************
+#endregion
+************************************/
