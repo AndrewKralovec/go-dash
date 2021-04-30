@@ -1,5 +1,6 @@
 # Go Dash
-Experimental go lang lodash implementation. Reflection is heavily used.
+Experimental go lang lodash implementation. 
+Reflection is heavily used in the first iteration, leading some functions to be vastly out performed by their native counter parts. See examples under [Benchmarks](#benchmarks)
 
 ## Methods
 
@@ -85,7 +86,7 @@ l := _.Last([]string{"peach", "apple", "pear", "plum"})
 
 ### `Native loop vs Each`
 
-Natvie loops is on average 1.5x-1.6x faster.
+Native loops is on average 1.5x-1.6x faster.
 
 ```shell
 BenchmarkNativeEachInt-16                   4092            299358 ns/op          157953 B/op      19744 allocs/op
@@ -97,7 +98,7 @@ BenchmarkEachStruct-16                      2664            543485 ns/op        
 
 ### `Native searching vs Filter`
 
-Natvie search is on average 40x-60x faster.
+Native search is on average 40x-60x faster.
 
 ```shell
 BenchmarkNativeFilterInt-16              1980960               606.3 ns/op             8 B/op          1 allocs/op
