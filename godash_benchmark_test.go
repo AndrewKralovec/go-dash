@@ -25,7 +25,8 @@ func GenerateStructSlice(n int) Points {
 // Do nothing
 func DoNothing(data ...interface{}) {}
 
-// avoid compiler optimisations
+// avoid compiler optimizations
+var boolResult bool
 var intResult int
 var interfaceResult interface{}
 var structResult Point
@@ -251,6 +252,89 @@ func BenchmarkFindStruct(b *testing.B) {
 		r = Find(structSlice, func(val interface{}) bool {
 			return val.(Point).X == target.X
 		})
+	}
+
+	interfaceResult = r
+}
+
+/************************************
+#endregion
+************************************/
+
+/************************************
+#region
+Includes Benchmarks
+************************************/
+
+func BenchmarkNativeIncludesInt(b *testing.B) {
+	b.StopTimer()
+
+	var r bool
+	intSlice := GenerateIntSlice(1000)
+	middle := ((len(intSlice) - 1) / 2)
+	target := intSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		for _, val := range intSlice {
+			if val == target {
+				r = true
+				break
+			}
+		}
+	}
+
+	boolResult = r
+}
+
+func BenchmarkIncludesInt(b *testing.B) {
+	b.StopTimer()
+
+	var r bool
+	intSlice := GenerateIntSlice(1000)
+	middle := ((len(intSlice) - 1) / 2)
+	target := intSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = Includes(intSlice, target)
+	}
+
+	interfaceResult = r
+}
+
+func BenchmarkNativeIncludesStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r bool
+	structSlice := GenerateStructSlice(1000)
+	middle := ((len(structSlice) - 1) / 2)
+	target := structSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		for _, val := range structSlice {
+			if val.X == target.X {
+				r = true
+				break
+			}
+		}
+	}
+
+	boolResult = r
+}
+
+func BenchmarkIncludesStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r bool
+	structSlice := GenerateStructSlice(1000)
+	middle := ((len(structSlice) - 1) / 2)
+	target := structSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = Includes(structSlice, target)
 	}
 
 	interfaceResult = r
