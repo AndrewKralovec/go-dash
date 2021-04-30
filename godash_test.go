@@ -19,6 +19,10 @@ var structArray = Points{
 	{0, 1},
 }
 
+/************************************
+First Tests
+************************************/
+
 func TestFirstString(t *testing.T) {
 	target := stringArray[0]
 	want := regexp.MustCompile(target)
@@ -43,6 +47,37 @@ func TestFirstPoint(t *testing.T) {
 	f := First(structArray)
 
 	if f == nil || target != f {
+		t.Fatalf(`does not match`)
+	}
+}
+
+/************************************
+Last Tests
+************************************/
+func TestLastString(t *testing.T) {
+	target := stringArray[len(stringArray)-1]
+	want := regexp.MustCompile(target)
+	l := Last(stringArray)
+
+	if l == nil || !want.MatchString(l.(string)) {
+		t.Fatalf(`does not match`)
+	}
+}
+
+func TestLastInt(t *testing.T) {
+	target := intArray[len(intArray)-1]
+	l := Last(intArray)
+
+	if l == nil || target != l {
+		t.Fatalf(`does not match`)
+	}
+}
+
+func TestLastPoint(t *testing.T) {
+	target := structArray[len(structArray)-1]
+	l := Last(structArray)
+
+	if l == nil || target != l {
 		t.Fatalf(`does not match`)
 	}
 }
