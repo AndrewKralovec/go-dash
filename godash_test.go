@@ -17,9 +17,12 @@ var structArray = Points{
 	{0, 0},
 	{1, 0},
 	{0, 1},
+	{1, 1},
 }
+var object = Point{0, 0}
 
 /************************************
+#region
 First Tests
 ************************************/
 
@@ -29,7 +32,7 @@ func TestFirstString(t *testing.T) {
 	f := First(stringArray)
 
 	if f == nil || !want.MatchString(f.(string)) {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, want, f)
 	}
 }
 
@@ -38,7 +41,7 @@ func TestFirstInt(t *testing.T) {
 	f := First(intArray)
 
 	if f == nil || target != f {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, target, f)
 	}
 }
 
@@ -47,11 +50,16 @@ func TestFirstPoint(t *testing.T) {
 	f := First(structArray)
 
 	if f == nil || target != f {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, target, f)
 	}
 }
 
 /************************************
+#endregion
+************************************/
+
+/************************************
+#region
 Last Tests
 ************************************/
 func TestLastString(t *testing.T) {
@@ -60,7 +68,7 @@ func TestLastString(t *testing.T) {
 	l := Last(stringArray)
 
 	if l == nil || !want.MatchString(l.(string)) {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, target, l)
 	}
 }
 
@@ -69,7 +77,7 @@ func TestLastInt(t *testing.T) {
 	l := Last(intArray)
 
 	if l == nil || target != l {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, target, l)
 	}
 }
 
@@ -78,6 +86,63 @@ func TestLastPoint(t *testing.T) {
 	l := Last(structArray)
 
 	if l == nil || target != l {
-		t.Fatalf(`does not match`)
+		t.Fatalf(`value :%v does not match :%v`, target, l)
 	}
 }
+
+/************************************
+#endregion
+************************************/
+
+/************************************
+#region
+Each Tests
+************************************/
+func TestEachString(t *testing.T) {
+	Each(stringArray, func(i interface{}, v interface{}) {
+		target := stringArray[i.(int)]
+		if v != target {
+			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
+	})
+}
+
+func TestEachInt(t *testing.T) {
+	Each(intArray, func(i interface{}, v interface{}) {
+		target := intArray[i.(int)]
+		if v != target {
+			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
+	})
+}
+
+func TestEachStruct(t *testing.T) {
+	Each(structArray, func(i interface{}, v interface{}) {
+		target := structArray[i.(int)]
+		if v != target {
+			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
+	})
+}
+
+func TestEachLength(t *testing.T) {
+	var visted []interface{}
+	Each(structArray, func(i interface{}, v interface{}) {
+		target := structArray[i.(int)]
+		if v != target {
+			t.Fatalf(`value :%v does not match :%v`, target, v)
+		}
+
+		visted = append(visted, v)
+	})
+	vSize := len(visted)
+	stSize := len(structArray)
+	if vSize != stSize {
+		t.Fatalf(`size :%v does not match :%v`, vSize, stSize)
+	}
+
+}
+
+/************************************
+#endregion
+************************************/

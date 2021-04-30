@@ -1,6 +1,26 @@
 package godash
 
-import "reflect"
+import (
+	"reflect"
+)
+
+func Each(data interface{}, cb func(k interface{}, v interface{})) {
+	v := reflect.ValueOf(data)
+
+	switch reflect.TypeOf(data).Kind() {
+	case reflect.Slice:
+		for i := 0; i < v.Len(); i++ {
+			val := v.Index(i).Interface()
+			cb(i, val)
+		}
+	case reflect.Struct, reflect.Map:
+		for i := 0; i < v.NumField(); i++ {
+			val := v.Field(i).Interface()
+			name := v.Type().Field(i).Name
+			cb(name, val)
+		}
+	}
+}
 
 func First(data interface{}) interface{} {
 	v := reflect.ValueOf(data)
