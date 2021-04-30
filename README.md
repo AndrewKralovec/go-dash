@@ -82,7 +82,8 @@ l := _.Last([]string{"peach", "apple", "pear", "plum"})
 ## Benchmarks
 
 * [`Native loop vs Each`](#native-loop-vs-each)
-* [`Native searching vs Filter`](#native-searching-vs-Filter)
+* [`Native searching vs Filter`](#native-searching-vs-filter)
+* [`Native searching vs Find`](#native-searching-vs-find)
 
 ### `Native loop vs Each`
 
@@ -106,4 +107,16 @@ BenchmarkFilterInt-16                      32916             36629 ns/op        
 
 BenchmarkNativeFilterStruct-16           1358168               882.1 ns/op            16 B/op          1 allocs/op
 BenchmarkFilterStruct-16                   29234             41097 ns/op           16040 B/op       1002 allocs/op
+```
+
+### `Native searching vs Find`
+
+Native search is on average 70x-120x faster.
+
+```shell
+BenchmarkNativeFindInt-16                8080290               148.6 ns/op             0 B/op          0 allocs/op
+BenchmarkFindInt-16                        65679             18234 ns/op            4024 B/op        501 allocs/op
+
+BenchmarkNativeFindStruct-16             4122471               290.0 ns/op             0 B/op          0 allocs/op
+BenchmarkFindStruct-16                     58962             20312 ns/op            8024 B/op        501 allocs/op
 ```

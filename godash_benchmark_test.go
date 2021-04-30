@@ -26,6 +26,9 @@ func GenerateStructSlice(n int) Points {
 func DoNothing(data ...interface{}) {}
 
 // avoid compiler optimisations
+var intResult int
+var interfaceResult interface{}
+var structResult Point
 var intSliceResult []int
 var structSliceResult Points
 var interfaceSliceResult []interface{}
@@ -164,6 +167,93 @@ func BenchmarkFilterStruct(b *testing.B) {
 	}
 
 	interfaceSliceResult = r
+}
+
+/************************************
+#endregion
+************************************/
+
+/************************************
+#region
+Find Benchmarks
+************************************/
+
+func BenchmarkNativeFindInt(b *testing.B) {
+	b.StopTimer()
+
+	var r int
+	intSlice := GenerateIntSlice(1000)
+	middle := ((len(intSlice) - 1) / 2)
+	target := intSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		for _, val := range intSlice {
+			if val == target {
+				r = target
+				break
+			}
+		}
+	}
+
+	intResult = r
+}
+
+func BenchmarkFindInt(b *testing.B) {
+	b.StopTimer()
+
+	var r interface{}
+	intSlice := GenerateIntSlice(1000)
+	middle := ((len(intSlice) - 1) / 2)
+	target := intSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = Find(intSlice, func(val interface{}) bool {
+			return val.(int) == target
+		})
+	}
+
+	interfaceResult = r
+}
+
+func BenchmarkNativeFindStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r Point
+	structSlice := GenerateStructSlice(1000)
+	middle := ((len(structSlice) - 1) / 2)
+	target := structSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		for _, val := range structSlice {
+			if val.X == target.X {
+				r = target
+				break
+			}
+		}
+	}
+
+	structResult = r
+}
+
+func BenchmarkFindStruct(b *testing.B) {
+	b.StopTimer()
+
+	var r interface{}
+	structSlice := GenerateStructSlice(1000)
+	middle := ((len(structSlice) - 1) / 2)
+	target := structSlice[middle]
+
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		r = Find(structSlice, func(val interface{}) bool {
+			return val.(Point).X == target.X
+		})
+	}
+
+	interfaceResult = r
 }
 
 /************************************
