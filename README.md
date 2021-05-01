@@ -20,10 +20,14 @@ _.Each([]string{"peach", "apple", "pear", "plum"}, func(i interface{}, v interfa
 	fmt.Println(v)
 })
 // => logs "peach", "apple", "pear", "plum"
+_.Each(Point{0, 0}, func(k interface{}, v interface{}) {
+    fmt.Println(k, v)
+})
+// => logs X 0, Y 1
 _.Each([]Point{{0, 0}, {1, 1}}, func(k interface{}, v interface{}) {
     fmt.Println(k, v)
 })
-// => logs 00, 11
+// => logs 0 {0 0}, 1 {1 1}
 ```
 
 ### `Filter` 
